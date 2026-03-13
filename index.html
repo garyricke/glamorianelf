@@ -14,6 +14,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
 
   <style>
+    /* ─── PASSWORD GATE ─────────────────────────────────── */
+    #gate-overlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: #0a0a0f;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 24px;
+      font-family: 'Cinzel', serif;
+    }
+    #gate-overlay .gate-logo {
+      font-size: 1.4rem; font-weight: 700; letter-spacing: 0.25em;
+      color: #c9a84c; text-align: center;
+    }
+    #gate-overlay .gate-tagline {
+      font-family: 'Crimson Text', serif; font-style: italic;
+      color: #b8b0a0; font-size: 1rem; opacity: 0.7;
+    }
+    #gate-overlay .gate-box {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      border: 1px solid rgba(201,168,76,0.3); padding: 32px 40px;
+      background: rgba(18,8,32,0.9);
+    }
+    #gate-overlay label {
+      font-size: 0.7rem; letter-spacing: 0.2em; color: #b8b0a0; text-transform: uppercase;
+    }
+    #gate-overlay input[type="password"] {
+      background: #0a0a0f; border: 1px solid rgba(201,168,76,0.4);
+      color: #f0ece4; font-family: 'Crimson Text', serif; font-size: 1.1rem;
+      padding: 10px 16px; text-align: center; outline: none; width: 220px;
+      letter-spacing: 0.15em;
+    }
+    #gate-overlay input[type="password"]:focus { border-color: #c9a84c; }
+    #gate-overlay .gate-btn {
+      background: #c9a84c; color: #0a0a0f; font-family: 'Cinzel', serif;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      border: none; padding: 12px 32px; cursor: pointer; font-weight: 700;
+      transition: background 0.2s;
+    }
+    #gate-overlay .gate-btn:hover { background: #e8c96d; }
+    #gate-overlay .gate-err {
+      font-family: 'Crimson Text', serif; color: #ff6b6b;
+      font-size: 0.9rem; min-height: 1.2em; text-align: center;
+    }
+
     /* ─── RESET & BASE ─────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1211,6 +1254,18 @@
 </head>
 <body>
 
+<!-- ─── PASSWORD GATE ───────────────────────────────────── -->
+<div id="gate-overlay">
+  <div class="gate-logo">Glamorian Elf</div>
+  <div class="gate-tagline">A realm awaits. Prove your passage.</div>
+  <div class="gate-box">
+    <label for="gate-input">Enter passphrase</label>
+    <input type="password" id="gate-input" autocomplete="off" autocorrect="off" spellcheck="false" />
+    <button class="gate-btn" id="gate-btn">Enter</button>
+    <div class="gate-err" id="gate-err"></div>
+  </div>
+</div>
+
 <!-- ─── NAVIGATION ───────────────────────────────────────── -->
 <nav id="main-nav">
   <a href="#hero" class="nav-logo">Glamorian Elf</a>
@@ -1792,6 +1847,7 @@
         <a href="#audio-sample">Listen</a>
         <a href="#signup">Newsletter</a>
         <a href="#">Amazon</a>
+        <a href="https://res.cloudinary.com/dsbllwpbh/image/upload/v1773370981/Glamorian_Elf_Book1_KDP-20260112_xnxspe.pdf" target="_blank" rel="noopener">Download PDF</a>
       </nav>
       <p class="footer-copy">&copy; 2026 Greyson Allen. All rights reserved. Glimoria and all associated characters are the intellectual property of Greyson Allen.</p>
     </div>
@@ -1976,6 +2032,50 @@
       }
     });
   });
+</script>
+
+<script>
+/* ── Password gate — verified via WebCrypto SHA-256; plain text never stored ── */
+(function () {
+  const DIGEST = 'f9aa42839774b3c6452bb3396619f0602cbb81b3720de38af809d93c887928b0';
+  const SESSION_KEY = '_ge_auth';
+  const overlay = document.getElementById('gate-overlay');
+  const input   = document.getElementById('gate-input');
+  const btn     = document.getElementById('gate-btn');
+  const err     = document.getElementById('gate-err');
+
+  async function hashStr(s) {
+    const buf = await crypto.subtle.digest('SHA-256',
+      new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function attempt() {
+    err.textContent = '';
+    const h = await hashStr(input.value.trim().toLowerCase());
+    if (h === DIGEST) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      overlay.style.transition = 'opacity 0.6s';
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 650);
+    } else {
+      input.value = '';
+      err.textContent = 'The realm does not recognise you.';
+      input.focus();
+    }
+  }
+
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    overlay.remove();
+    return;
+  }
+
+  overlay.style.display = 'flex';
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
+  btn.addEventListener('click', attempt);
+  requestAnimationFrame(() => input.focus());
+})();
 </script>
 
 </body>
