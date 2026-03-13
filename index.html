@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glamorian Elf — Book One | Geyson Allen</title>
+  <meta name="description" content="In the fractured world of Glimoria, a young heir to the Chronoblade must master time itself before betrayal tears the realm apart. Glamorian Elf — Book One by Geyson Allen." />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --obsidian:    #0a0a0f;
+      --midnight:    #1a0a2e;
+      --deep-violet: #120820;
+      --teal:        #00d4aa;
+      --teal-dim:    #00a888;
+      --gold:        #c9a84c;
+      --gold-light:  #e8c96d;
+      --gold-dim:    #8a6c28;
+      --white:       #f0ece4;
+      --white-dim:   #b8b0a0;
+      --parchment:   #f5eed8;
+      --parchment-dark: #e8dfc0;
+      --ink:         #1a160e;
+      --card-bg:     #100820;
+      --card-border: #2a1a4a;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--obsidian);
+      color: var(--white);
+      font-family: 'Crimson Text', Georgia, serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--obsidian); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+    /* ─── UTILITY ────────────────────────────────────────── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .gold-rule {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 32px;
+    }
+
+    /* ─── NAVIGATION ─────────────────────────────────────── */
+    #main-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(180deg, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.0) 100%);
+      transition: background 0.3s;
+    }
+    #main-nav.scrolled { background: rgba(10,10,15,0.97); border-bottom: 1px solid rgba(201,168,76,0.15); }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a.btn-primary,
+    .nav-links a.btn-primary:hover { color: var(--obsidian); }
+
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--white-dim); border-radius: 2px; transition: 0.3s; }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,15,0.98); flex-direction: column; gap: 0; padding: 8px 0; border-top: 1px solid rgba(201,168,76,0.15); }
+      .nav-links.open { display: flex; }
+      .nav-links li a { display: block; padding: 14px 24px; }
+      .nav-toggle { display: flex; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse 120% 80% at 60% 40%, #1e0a3a 0%, #0d0820 40%, var(--obsidian) 100%);
+    }
+
+    /* Starfield canvas */
+    #starfield {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+
+    /* Gradient overlay over canvas */
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 30% 50%, rgba(26,10,46,0.6) 0%, transparent 70%),
+        linear-gradient(180deg, transparent 40%, var(--obsidian) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding-top: 100px;
+    }
+
+    .hero-text { padding: 48px 0; }
+
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      text-shadow:
+        0 0 60px rgba(201,168,76,0.4),
+        0 0 120px rgba(201,168,76,0.15);
+      animation: fadeInUp 0.8s 0.15s ease both;
+    }
+    .hero-title span {
+      display: block;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #a07830 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      letter-spacing: 0.25em;
+      color: var(--teal);
+      margin-top: 8px;
+      animation: fadeInUp 0.8s 0.25s ease both;
+    }
+
+    .hero-rule {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, var(--gold-dim), transparent);
+      margin: 24px 0;
+      animation: fadeInUp 0.8s 0.35s ease both;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      font-style: italic;
+      color: var(--white-dim);
+      line-height: 1.6;
+      max-width: 480px;
+      animation: fadeInUp 0.8s 0.45s ease both;
+    }
+
+    .hero-ctas {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      margin-top: 36px;
+      animation: fadeInUp 0.8s 0.55s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, #a07830 100%);
+      color: var(--obsidian);
+      box-shadow: 0 4px 24px rgba(201,168,76,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201,168,76,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--teal);
+      border: 1px solid var(--teal);
+      box-shadow: 0 0 0 rgba(0,212,170,0);
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,170,0.08);
+      box-shadow: 0 0 20px rgba(0,212,170,0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Hero cover image */
+    .hero-cover {
+      display: flex; justify-content: center; align-items: flex-end;
+      animation: fadeInUp 0.9s 0.3s ease both;
+      position: relative;
+    }
+    .hero-cover::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cover-img-wrap {
+      position: relative;
+      max-width: 360px;
+      width: 100%;
+    }
+    .cover-img-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 10%; right: 10%;
+      height: 60px;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.3) 0%, transparent 70%);
+      filter: blur(12px);
+    }
+    .cover-img-wrap img {
+      width: 100%;
+      display: block;
+      border-radius: 4px;
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.2),
+        0 20px 60px rgba(0,0,0,0.8),
+        0 0 80px rgba(201,168,76,0.1);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .cover-img-wrap img:hover {
+      transform: scale(1.02) translateY(-4px);
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.35),
+        0 30px 80px rgba(0,0,0,0.9),
+        0 0 100px rgba(201,168,76,0.2);
+    }
+    .cover-badge {
+      position: absolute;
+      top: 16px; right: -12px;
+      background: linear-gradient(135deg, var(--gold) 0%, #a07830 100%);
+      color: var(--obsidian);
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 2px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      animation: fadeIn 1s 1.2s ease both;
+    }
+    .hero-scroll-hint span {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: rgba(180,170,155,0.6);
+      text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 1px solid rgba(201,168,76,0.5);
+      border-bottom: 1px solid rgba(201,168,76,0.5);
+      transform: rotate(45deg);
+      animation: bounceDown 1.8s ease infinite;
+    }
+
+    @media (max-width: 880px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-rule { margin: 24px auto; }
+      .hero-tagline { margin: 0 auto; }
+      .hero-ctas { justify-content: center; }
+      .hero-cover { order: -1; }
+      .cover-img-wrap { max-width: 240px; }
+      .cover-badge { display: none; }
+    }
+
+    /* ─── SYNOPSIS ───────────────────────────────────────── */
+    #synopsis {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--obsidian) 0%, var(--deep-violet) 50%, var(--obsidian) 100%);
+      position: relative;
+    }
+    #synopsis::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .synopsis-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 64px;
+      align-items: start;
+      position: relative; z-index: 1;
+    }
+
+    .synopsis-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 32px;
+      line-height: 1.2;
+    }
+    .synopsis-heading em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .synopsis-body p {
+      font-size: 1.15rem;
+      color: rgba(240,236,228,0.88);
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    .synopsis-body p:first-child::first-letter {
+      float: left;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 4.2rem;
+      line-height: 0.85;
+      padding-right: 10px;
+      padding-top: 6px;
+      color: var(--gold);
+    }
+
+    .synopsis-sidebar {
+      background: linear-gradient(145deg, rgba(30,10,60,0.6) 0%, rgba(16,8,32,0.8) 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 4px;
+      padding: 32px 28px;
+      position: sticky; top: 100px;
+    }
+    .sidebar-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 24px;
+    }
+    .sidebar-facts { list-style: none; }
+    .sidebar-facts li {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .sidebar-facts li:last-child { border-bottom: none; }
+    .fact-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+    }
+    .fact-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 800px) {
+      .synopsis-grid { grid-template-columns: 1fr; gap: 40px; }
+      .synopsis-sidebar { position: static; }
+    }
+
+    /* ─── MODAL ───────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: linear-gradient(135deg, #0f0a1e 0%, #0a0a0f 100%);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 16px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 92vh;
+      overflow: hidden;
+      position: relative;
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 0 80px rgba(201,168,76,0.15), 0 40px 100px rgba(0,0,0,0.7);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.85) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 1.6rem; cursor: pointer;
+      line-height: 1; transition: color 0.2s;
+      z-index: 2;
+    }
+    .modal-close:hover { color: var(--gold); }
+    .modal-inner { display: flex; gap: 0; align-items: stretch; }
+    .modal-card-img {
+      width: 260px;
+      flex-shrink: 0;
+      border-radius: 16px 0 0 16px;
+      object-fit: contain;
+      object-position: center;
+      background: #060410;
+      align-self: stretch;
+    }
+    .modal-content {
+      padding: 36px 32px 36px 28px;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 92vh;
+    }
+    .modal-role {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--teal);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .modal-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: var(--gold);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .modal-desc {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .modal-quote {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--teal);
+      border-left: 2px solid var(--teal);
+      padding-left: 14px;
+      margin: 0;
+    }
+    .modal-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .modal-stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 14px;
+      text-align: center;
+    }
+    .modal-stat-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .modal-stat-val {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+    }
+    @media (max-width: 640px) {
+      .modal-inner { flex-direction: column; }
+      .modal-card-img { width: 100%; max-height: 380px; object-fit: contain; border-radius: 16px 16px 0 0; }
+      .modal-content { max-height: none; padding: 24px 20px; }
+      .modal-box { max-height: 95vh; overflow-y: auto; }
+    }
+    @media (min-width: 641px) and (max-width: 900px) {
+      .modal-card-img { width: 200px; }
+    }
+
+    /* ─── CHARACTERS ─────────────────────────────────────── */
+    #characters {
+      padding: 100px 0;
+      background: var(--obsidian);
+    }
+
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--white-dim);
+      font-style: italic;
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    @media (max-width: 860px) { .char-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .char-grid { grid-template-columns: 1fr; } }
+
+    .char-card {
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .char-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--gold)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .char-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.05);
+    }
+    .char-card:hover::before { opacity: 1; }
+
+    .char-card[data-accent="teal"] { --card-accent: var(--teal); }
+    .char-card[data-accent="teal"]:hover { border-color: rgba(0,212,170,0.3); }
+
+    .char-glyph {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .char-card[data-accent="teal"] .char-glyph {
+      background: rgba(0,212,170,0.08);
+      border-color: rgba(0,212,170,0.2);
+    }
+
+    .char-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .char-role {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .char-card[data-accent="gold"] .char-role { color: var(--gold); }
+
+    .char-desc {
+      font-size: 1rem;
+      color: rgba(240,236,228,0.75);
+      line-height: 1.7;
+    }
+
+    .char-quote {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(201,168,76,0.7);
+    }
+
+    /* ─── SAMPLE READER ──────────────────────────────────── */
+    #sample {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--obsidian) 0%, #0e0818 50%, var(--obsidian) 100%);
+    }
+
+    .reader-frame {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .reader-header {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(90deg, #1e0e38, #120820);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      padding: 16px 24px;
+    }
+    .reader-chapter-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .reader-dots { display: flex; gap: 6px; }
+    .reader-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.3);
+    }
+    .reader-dots span:nth-child(1) { background: #ff6b6b; }
+    .reader-dots span:nth-child(2) { background: #ffd93d; }
+    .reader-dots span:nth-child(3) { background: #6bcb77; }
+
+    .reader-body {
+      background: var(--parchment);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-top: none;
+      padding: 48px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .reader-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--gold-dim) 0%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    .reader-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .reader-rule {
+      width: 120px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      margin: 0 auto 32px;
+    }
+
+    .reader-text {
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--ink);
+      max-height: 580px;
+      overflow: hidden;
+      position: relative;
+    }
+    .reader-text p { margin-bottom: 1.2em; }
+    .reader-text .list-item {
+      margin-left: 16px;
+      margin-bottom: 0.4em;
+      font-style: italic;
+    }
+
+    .reader-fade {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 160px;
+      background: linear-gradient(0deg, var(--parchment) 0%, rgba(245,238,216,0.85) 40%, transparent 100%);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 24px;
+    }
+    .reader-continue {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      border: 1px solid rgba(138,108,40,0.4);
+      padding: 10px 20px;
+      border-radius: 2px;
+      background: rgba(245,238,216,0.9);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reader-continue:hover {
+      background: var(--parchment-dark);
+      color: var(--ink);
+    }
+
+    .reader-footer {
+      background: linear-gradient(90deg, #1e0e38, #120820);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px;
+    }
+    .reader-page-info {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--white-dim);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+      .reader-body { padding: 32px 24px; }
+    }
+
+    /* ─── AUDIO ──────────────────────────────────────────── */
+    #audio-sample {
+      padding: 100px 0;
+      background: var(--deep-violet);
+      position: relative;
+      overflow: hidden;
+    }
+    #audio-sample::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,212,170,0.04) 0%, transparent 70%);
+    }
+
+    .audio-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+
+    .audio-label {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .audio-sub {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--teal);
+      margin-bottom: 40px;
+    }
+
+    /* Waveform animation */
+    .waveform {
+      display: flex; align-items: center; justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin-bottom: 32px;
+    }
+    .wave-bar {
+      width: 4px;
+      border-radius: 2px;
+      background: var(--teal);
+      animation: wave 1.4s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    .wave-bar:nth-child(odd) { background: var(--gold); }
+    @keyframes wave {
+      0%, 100% { height: 8px; opacity: 0.4; }
+      50% { height: var(--h, 40px); opacity: 0.9; }
+    }
+    /* Stagger wave bars */
+    .wave-bar:nth-child(1)  { --h: 20px; animation-delay: 0s; }
+    .wave-bar:nth-child(2)  { --h: 35px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3)  { --h: 50px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4)  { --h: 38px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(5)  { --h: 55px; animation-delay: 0.4s; }
+    .wave-bar:nth-child(6)  { --h: 45px; animation-delay: 0.5s; }
+    .wave-bar:nth-child(7)  { --h: 58px; animation-delay: 0.6s; }
+    .wave-bar:nth-child(8)  { --h: 42px; animation-delay: 0.7s; }
+    .wave-bar:nth-child(9)  { --h: 52px; animation-delay: 0.8s; }
+    .wave-bar:nth-child(10) { --h: 36px; animation-delay: 0.9s; }
+    .wave-bar:nth-child(11) { --h: 48px; animation-delay: 1.0s; }
+    .wave-bar:nth-child(12) { --h: 30px; animation-delay: 1.1s; }
+    .wave-bar:nth-child(13) { --h: 44px; animation-delay: 1.2s; }
+    .wave-bar:nth-child(14) { --h: 22px; animation-delay: 1.3s; }
+    .wave-bar:nth-child(15) { --h: 16px; animation-delay: 1.4s; }
+
+    /* HTML5 audio player wrapper */
+    .audio-player-wrap {
+      background: rgba(10,10,15,0.6);
+      border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 4px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .audio-player-top {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .play-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dim) 100%);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(0,212,170,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .play-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 32px rgba(0,212,170,0.5);
+    }
+    .play-btn svg { fill: var(--obsidian); }
+
+    .audio-info { flex: 1; text-align: left; }
+    .audio-track-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .audio-track-author {
+      font-size: 0.85rem;
+      color: var(--teal);
+    }
+
+    .audio-progress-wrap { display: flex; align-items: center; gap: 12px; }
+    .audio-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--white-dim);
+      white-space: nowrap;
+    }
+    .audio-progress {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+    .audio-progress-fill {
+      width: 30%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal) 0%, var(--gold) 100%);
+      border-radius: 2px;
+      position: relative;
+    }
+    .audio-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -5px; top: -4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 0 6px rgba(0,212,170,0.5);
+    }
+
+    .audio-coming-soon {
+      display: inline-block;
+      margin-top: 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(0,212,170,0.6);
+      border: 1px solid rgba(0,212,170,0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+
+    /* ─── AUTHOR ─────────────────────────────────────────── */
+    #author {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--obsidian) 0%, #0d0820 100%);
+    }
+    .author-inner {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .author-photo-wrap {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .author-photo {
+      width: 240px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      border: 2px solid rgba(201,168,76,0.25);
+      box-shadow: 0 0 60px rgba(201,168,76,0.12), 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .author-photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 16px;
+      border: 1px solid rgba(201,168,76,0.15);
+      pointer-events: none;
+    }
+    .author-badge {
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #c9a84c, #a07830);
+      color: #0a0a0f;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .author-text { flex: 1; }
+    .author-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--teal);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .author-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--gold);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .author-bio {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.12rem;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .author-debut {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .author-debut::before {
+      content: '✦';
+      color: var(--gold);
+    }
+    @media (max-width: 700px) {
+      .author-inner { flex-direction: column; align-items: center; text-align: center; }
+      .author-photo { width: 180px; height: 225px; }
+    }
+
+    /* ─── EMAIL SIGNUP ───────────────────────────────────── */
+    #signup {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--obsidian) 0%, #100820 50%, var(--obsidian) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #signup::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .signup-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+
+    .signup-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(201,168,76,0.4));
+    }
+
+    .signup-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .signup-sub {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--white-dim);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .signup-form {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+    .signup-input {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .signup-input::placeholder { color: var(--white-dim); opacity: 0.5; }
+    .signup-input:focus {
+      border-color: rgba(201,168,76,0.5);
+      box-shadow: 0 0 16px rgba(201,168,76,0.1);
+    }
+
+    .signup-privacy {
+      font-size: 0.82rem;
+      color: rgba(180,170,155,0.5);
+    }
+
+    @media (max-width: 520px) {
+      .signup-form { flex-direction: column; }
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--obsidian);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 48px 0 32px;
+    }
+    .footer-inner {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+    }
+    .footer-tagline {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--white-dim);
+      opacity: 0.6;
+    }
+    .footer-nav { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .footer-nav a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .footer-nav a:hover { opacity: 1; color: var(--gold); }
+    .footer-copy {
+      font-size: 0.82rem;
+      color: var(--white-dim);
+      opacity: 0.4;
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 40px rgba(201,168,76,0.2); }
+      50%       { text-shadow: 0 0 80px rgba(201,168,76,0.45), 0 0 120px rgba(201,168,76,0.15); }
+    }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* Floating glow orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+    .orb-1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 70%);
+      top: 10%; right: 5%;
+      animation-delay: 0s;
+    }
+    .orb-2 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      bottom: 20%; left: 8%;
+      animation-delay: 3s;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ───────────────────────────────────────── -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">Glamorian Elf</a>
+  <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#synopsis">The Story</a></li>
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#sample">Read Sample</a></li>
+    <li><a href="#audio-sample">Listen</a></li>
+    <li><a href="#author">Author</a></li>
+    <li><a href="#signup" class="btn btn-primary" style="padding:8px 18px;font-size:0.68rem;">Join the Realm</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <canvas id="starfield"></canvas>
+  <div class="hero-gradient"></div>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Text -->
+      <div class="hero-text">
+        <p class="hero-eyebrow">Geyson Allen &mdash; Book One</p>
+        <h1 class="hero-title">
+          <span>Glamorian</span>
+          Elf
+        </h1>
+        <p class="hero-subtitle">Book One</p>
+        <div class="hero-rule"></div>
+        <p class="hero-tagline">
+          Time can be seized. Betrayal cannot be unmade.<br>
+          In the fractured world of Glimoria, legacy is forged in blade and sacrifice.
+        </p>
+        <div class="hero-ctas">
+          <a href="#sample" class="btn btn-primary">Read a Sample</a>
+          <a href="#" class="btn btn-outline">Get on Amazon</a>
+        </div>
+      </div>
+
+      <!-- Cover image -->
+      <div class="hero-cover">
+        <div class="cover-img-wrap">
+          <img
+            src="generated_imgs/edited-2026-03-13T02-19-59-911Z-b82gzf.png"
+            alt="Glamorian Elf — Book One cover art featuring a warrior in dark fantasy armor"
+          />
+          <span class="cover-badge">Book One</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ─── SYNOPSIS ─────────────────────────────────────────── -->
+<section id="synopsis">
+  <div class="container">
+    <div class="synopsis-grid">
+      <!-- Main blurb -->
+      <div class="synopsis-body">
+        <p class="section-label reveal">The World of Glimoria</p>
+        <h2 class="synopsis-heading reveal reveal-delay-1">
+          When the Chronoblades <em>awakened</em>,<br>so did everything to stop them.
+        </h2>
+
+        <div class="reveal reveal-delay-2">
+          <p>
+            In the age before reckoning, seven powers gathered in the Hall of Dawn and forged three sacred Chronoblades — blades of Balance, Time, and Spirit — binding the fractured realm of Glimoria beneath a single vow of unity. But even as the forge-fire blazed, a shadow moved at the edges of the circle, and the seeds of betrayal were planted in the same breath as the oath. The Council of Unity endured. The shadow endured too.
+          </p>
+          <p>
+            Generations later, Raven — half-demon, heir to the Chronoblade legacy — exists at the crossroads of two worlds: the world that forged her, and the world that fears her. When a young trainee named Talia enters her orbit, and the enigmatic Spiderweaver begins to pull threads through the political web of the Council, Raven must confront not only the rising Null Tide — a force of temporal unraveling threatening to erase Glimoria — but the question her mother's silence always protected her from: What does she truly inherit from the ones who came before?
+          </p>
+          <p>
+            Across eighteen chapters, <em>Glamorian Elf</em> weaves a story of chosen heirs and unchosen burdens, of twin bonds and political betrayal, of a magic system rooted in time itself and the irreversible cost of wielding it. Raven's journey from sardonic outsider to reluctant guardian forms the emotional spine of an epic that leaves its world irrevocably changed — and its readers hungry for what comes next.
+          </p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="synopsis-sidebar reveal reveal-delay-3">
+        <p class="sidebar-title">World at a Glance</p>
+        <ul class="sidebar-facts">
+          <li>
+            <span class="fact-label">Chapters</span>
+            <span class="fact-value">18 + Prologue</span>
+          </li>
+          <li>
+            <span class="fact-label">Realm</span>
+            <span class="fact-value">Glimoria</span>
+          </li>
+          <li>
+            <span class="fact-label">Magic System</span>
+            <span class="fact-value">Chronoblade &amp; Shadow Blade</span>
+          </li>
+          <li>
+            <span class="fact-label">Central Threat</span>
+            <span class="fact-value">The Null Tide</span>
+          </li>
+          <li>
+            <span class="fact-label">Series</span>
+            <span class="fact-value">Book One of a Series</span>
+          </li>
+          <li>
+            <span class="fact-label">Author</span>
+            <span class="fact-value">Geyson Allen</span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CHARACTERS ────────────────────────────────────────── -->
+<section id="characters">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">The Cast of Glimoria</p>
+      <h2 class="section-title">Faces of the Realm</h2>
+      <p class="section-subtitle">The ones who carry the burden — and those who decide its weight.</p>
+    </div>
+    <div class="gold-rule"></div>
+
+    <div class="char-grid">
+
+      <!-- Raven -->
+      <div class="char-card reveal reveal-delay-1" data-accent="gold" data-char="raven" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-54-19-403Z-l4uj4u.png" alt="Raven, Chronoblade Heir" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(201,168,76,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+      <!-- Talia -->
+      <div class="char-card reveal reveal-delay-2" data-accent="teal" data-char="talia" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-54-47-999Z-vuritq.png" alt="Talia, Elven Trainee" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(0,212,170,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+      <!-- The Spiderweaver -->
+      <div class="char-card reveal reveal-delay-3" data-accent="teal" data-char="spiderweaver" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-55-25-736Z-jm8fis.png" alt="The Spiderweaver" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(138,43,226,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+      <!-- The Twins -->
+      <div class="char-card reveal reveal-delay-4" data-accent="gold" data-char="twins" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-56-14-851Z-e6wv86.png" alt="Móran and Saranda, the Elven Twins" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(201,168,76,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+      <!-- Azura -->
+      <div class="char-card reveal reveal-delay-5" data-accent="gold" data-char="azura" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-56-44-243Z-np3jur.png" alt="Azura, Elder of Unity" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(100,160,255,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+      <!-- Rafani -->
+      <div class="char-card reveal reveal-delay-1" data-accent="teal" data-char="rafani" style="cursor:pointer">
+        <img src="generated_imgs/generated-2026-03-13T01-57-15-207Z-dbehgy.png" alt="Rafani, Spirit Fox Familiar" style="width:100%;border-radius:12px;display:block;transition:transform 0.3s,box-shadow 0.3s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 0 40px rgba(200,240,255,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CHARACTER MODALS ───────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div class="modal-inner">
+      <img class="modal-card-img" id="modal-img" src="" alt="">
+      <div class="modal-content">
+        <p class="modal-role" id="modal-role"></p>
+        <h2 class="modal-name" id="modal-name"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <blockquote class="modal-quote" id="modal-quote"></blockquote>
+        <div class="modal-stats" id="modal-stats"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const chars = {
+    raven: {
+      img: 'generated_imgs/generated-2026-03-13T01-54-19-403Z-l4uj4u.png',
+      name: 'Raven',
+      role: 'Protagonist — Chronoblade Heir',
+      desc: 'Born into a legacy she never asked for, Raven wields the Chronoblade with the authority of someone who has learned to distrust every comfort. Her sardonic wit is a shield against grief she has never quite outrun — but beneath it lies the fiercest will in Glimoria. She moves through the world as both its protector and its most dangerous secret.',
+      quote: '"Destiny doesn\'t knock — it claws."',
+      stats: [
+        { label: 'Weapon', val: 'Chronoblade' },
+        { label: 'Power', val: 'Time Manipulation' },
+        { label: 'Affiliation', val: 'Unbound' },
+        { label: 'Arc', val: 'Legacy & Grief' },
+      ]
+    },
+    talia: {
+      img: 'generated_imgs/generated-2026-03-13T01-54-47-999Z-vuritq.png',
+      name: 'Talia',
+      role: 'Young Trainee — The Spark',
+      desc: 'Impulsive, perceptive, and burning with a curiosity that outpaces her caution, Talia enters the story as a student and emerges as something far more essential. Her growth is quiet but seismic — the girl who arrived asking too many questions becomes, by the story\'s close, someone whose silence speaks louder than any answer.',
+      quote: '"She asked the questions no one else dared."',
+      stats: [
+        { label: 'Magic', val: 'Elemental Initiate' },
+        { label: 'Age', val: 'Young' },
+        { label: 'Affiliation', val: 'The Academy' },
+        { label: 'Arc', val: 'Coming of Age' },
+      ]
+    },
+    spiderweaver: {
+      img: 'generated_imgs/generated-2026-03-13T01-55-25-736Z-jm8fis.png',
+      name: 'The Spiderweaver',
+      role: 'The Enigma — Thread-Keeper',
+      desc: 'Cloaked in starlit silk and moving between mentor and menace with unsettling ease, the Spiderweaver was present at the First Council when the Chronoblades were forged — and her hand lingered too long on a thread that night. Whether she is Glimoria\'s last hope or its most elegant architect of ruin remains the question the novel refuses to answer too quickly.',
+      quote: '"Threads snap when too many hands pull. But a single hand strangles."',
+      stats: [
+        { label: 'Power', val: 'Thread-Sight' },
+        { label: 'Age', val: 'Ancient' },
+        { label: 'Allegiance', val: 'Unknown' },
+        { label: 'Arc', val: 'Betrayal & Purpose' },
+      ]
+    },
+    twins: {
+      img: 'generated_imgs/generated-2026-03-13T01-56-14-851Z-e6wv86.png',
+      name: 'Móran & Saranda',
+      role: 'The Twin Bearers',
+      desc: 'Móran speaks in clipped tactical certainties; Saranda in layered observations that arrive just before the event they describe. Together they form a bond the prophecy itself seems to orbit — twin-born hands destined to either mend the balance or shatter it. Their fate at the novel\'s close transforms Book One\'s final pages into something that cannot be read without urgency.',
+      quote: '"From twin-born hands, the balance mends — or breaks forever."',
+      stats: [
+        { label: 'Móran', val: 'Blade & Tactics' },
+        { label: 'Saranda', val: 'Sight & Strategy' },
+        { label: 'Affiliation', val: 'The Council Guard' },
+        { label: 'Arc', val: 'Prophecy & Sacrifice' },
+      ]
+    },
+    azura: {
+      img: 'generated_imgs/generated-2026-03-13T01-56-44-243Z-np3jur.png',
+      name: 'Azura',
+      role: 'Council Elder — Starlight Keeper',
+      desc: 'Calm as a night sky before meteors fall, Azura was among the seven who gathered at the Hall of Dawn to forge the original Chronoblades. Her stillness carries the weight of someone who has already seen how each argument ends. She saw what the Spiderweaver\'s hand did that night — and chose silence. That choice threads through every chapter that follows.',
+      quote: '"The Null Tide spreads. If we falter, Glimoria falls."',
+      stats: [
+        { label: 'Element', val: 'Starlight' },
+        { label: 'Role', val: 'Council Elder' },
+        { label: 'Power', val: 'Celestial Sight' },
+        { label: 'Arc', val: 'Duty & Secrets' },
+      ]
+    },
+    rafani: {
+      img: 'generated_imgs/generated-2026-03-13T01-57-15-207Z-dbehgy.png',
+      name: 'Rafani',
+      role: "Raven's Familiar — Spirit Fox",
+      desc: 'An ethereal nine-tailed spirit fox of moonlit silver fur and gold-glowing eyes, Rafani is part sentinel, part conscience. Her fox-sight sees traces that eyes cannot follow — she tracks the Null Tide\'s advance and warns of threats long before they arrive. She speaks when silence would be more comfortable, which is precisely what makes her indispensable.',
+      quote: '"The wind isn\'t patient."',
+      stats: [
+        { label: 'Type', val: 'Spirit Fox' },
+        { label: 'Tails', val: 'Nine' },
+        { label: 'Power', val: 'Spirit Sight' },
+        { label: 'Bond', val: 'Raven' },
+      ]
+    },
+  };
+
+  const overlay = document.getElementById('modal-overlay');
+  const closeBtn = document.getElementById('modal-close');
+
+  document.querySelectorAll('[data-char]').forEach(card => {
+    card.addEventListener('click', function() {
+      const key = this.dataset.char;
+      const c = chars[key];
+      document.getElementById('modal-img').src = c.img;
+      document.getElementById('modal-img').alt = c.name;
+      document.getElementById('modal-role').textContent = c.role;
+      document.getElementById('modal-name').textContent = c.name;
+      document.getElementById('modal-desc').textContent = c.desc;
+      document.getElementById('modal-quote').textContent = c.quote;
+      const statsEl = document.getElementById('modal-stats');
+      statsEl.innerHTML = c.stats.map(s =>
+        `<div class="modal-stat"><span class="modal-stat-label">${s.label}</span><span class="modal-stat-val">${s.val}</span></div>`
+      ).join('');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+})();
+</script>
+
+<!-- ─── SAMPLE READER ──────────────────────────────────────── -->
+<section id="sample">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Read an Excerpt</p>
+      <h2 class="section-title">The Prologue: The First Council</h2>
+      <p class="section-subtitle">Where the story begins — long before any of them knew what they were forging.</p>
+    </div>
+    <div class="gold-rule"></div>
+
+    <div class="reader-frame reveal reveal-delay-1">
+      <!-- Reader chrome top -->
+      <div class="reader-header">
+        <span class="reader-chapter-label">Prologue &mdash; Glamorian Elf, Book One</span>
+        <div class="reader-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Parchment body -->
+      <div class="reader-body">
+        <h3 class="reader-title">The First Council</h3>
+        <div class="reader-rule"></div>
+
+        <div class="reader-text" id="reader-text">
+          <p>The Hall of Dawn still bore the scars of the Sundering War — hairline fractures in the marble, star-ash fused into the ceiling, a soot line no cleansing could erase. Power hummed here, but so did memory.</p>
+
+          <p>They gathered at last in Glimoria's heart:</p>
+
+          <p class="list-item">Azura, calm as a night sky before meteors fall.<br>
+          Antheon, thunder-breathed, stone-broad.<br>
+          Snowvere, the spiritual snow fox, winter hush incarnate.<br>
+          Zun, his counterpart, laughter woven into wind and snow.<br>
+          Rika, flame-keen, restless, heir to fire's forge.<br>
+          Spiderweaver, cloaked in starlit silk, eyes on threads both seen and unseen.<br>
+          Cerberus, threefold gaze, three voices, one body.<br>
+          Others unnamed, yet heavy with purpose.</p>
+
+          <p>Their voices rose in turn, clashing like their elements, but their shared vow bound them: to bring forth unity throughout Glimoria.</p>
+
+          <p>Upon the obsidian altar veined with living light lay shards of creation — steel that remembered ore, embers that remembered their first sun, shadows that remembered silence. Tonight, they would forge not one, but three blades, each a vessel of unity.</p>
+
+          <p>Azura lifted her hand, starlight steady. "The Null Tide spreads. If we falter, Glimoria falls."</p>
+          <p>Antheon slammed his fist upon the altar. "Then we forge. We stand."</p>
+          <p>Rika's fire leapt. "We forge, we lead. Fire will not wait for councils."</p>
+          <p>Snowvere's frost cooled her heat. "A fire without hearth consumes itself."</p>
+          <p>Zun's laughter swirled like a gust. "Balance tips faster than you think."</p>
+          <p>Spiderweaver's silken threads shivered above them. "Threads snap when too many hands pull. But a single hand strangles."</p>
+          <p>Cerberus's voices thundered in triad: "Unity. Or ruin. Both are near."</p>
+
+          <p>Together their powers poured into the forge. Heat and frost clashed, hissing. Shadows laced with light. Life and death nodded across their divide. The shards drank it all, and the forge woke.</p>
+
+          <p>From flame and frost, three blades emerged: The Chronoblade of Balance, silver and gold entwined. The Chronoblade of Time, its edge shimmering like flowing sand. The Chronoblade of Spirit, its glow pulsing like a heartbeat.</p>
+
+          <p>Each was blessed by the twin phoenixes descending from the vault — one silver, one gold — their wings crossing moonlight and dawnfire. Torches burned white for a heartbeat, memory itself scorched into stone.</p>
+
+          <p>But even as unity blazed, division stirred. Spiderweaver's hand lingered on a thread too long. It vanished into a darkness not her own. A chill swept the hall — a whisper silent as death, colder than winter. Though unnamed, its presence was felt: the Shadowblade, born of void, a reflection of what they had forged.</p>
+
+          <p>Spiderweaver's breath caught, her silks trembling. She lowered her hand quickly, masking fear with stillness. Azura saw — but said nothing. The others did not notice, or pretended not to. Seeds of betrayal took root that night.</p>
+
+          <p>Above, the phoenixes cried: <em>"From one, two shall rise. One to kindle, one to break. Bound, they bear the blade — and the world upon it."</em></p>
+
+          <p>The Council sealed the blades within stone, frost, and air, vowing they would remain until the destined bearers arose. Yet shadows clung to the chamber's edges, as though something else listened — something that longed not for unity, but for its undoing.</p>
+        </div>
+
+        <!-- Fade out effect -->
+        <div class="reader-fade">
+          <button class="reader-continue" onclick="expandReader()">Continue Reading &darr;</button>
+        </div>
+      </div>
+
+      <!-- Reader chrome bottom -->
+      <div class="reader-footer">
+        <span class="reader-page-info">Glamorian Elf — Book One &nbsp;|&nbsp; Geyson Allen &nbsp;|&nbsp; &copy; 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AUDIO SAMPLE ───────────────────────────────────────── -->
+<section id="audio-sample">
+  <div class="container">
+    <div class="audio-wrap">
+      <p class="section-label reveal">Audio Experience</p>
+      <h2 class="audio-label reveal reveal-delay-1">Hear the Prologue</h2>
+      <p class="audio-sub reveal reveal-delay-2">Narrated Prologue — The First Council</p>
+
+      <!-- Waveform decoration -->
+      <div class="waveform reveal reveal-delay-3">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+
+      <!-- Real HTML5 audio element (hidden) -->
+      <audio id="prologue-audio" preload="metadata">
+        <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1773366422/glamorian-elf-prolouge-w-music_k3bycn.mp3" type="audio/mpeg">
+      </audio>
+
+      <!-- Styled player UI -->
+      <div class="audio-player-wrap reveal reveal-delay-4" id="player-ui">
+        <div class="audio-player-top">
+          <button class="play-btn" id="play-pause-btn" aria-label="Play audio sample">
+            <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <div class="audio-info">
+            <p class="audio-track-name">The First Council &mdash; Prologue</p>
+            <p class="audio-track-author">Glamorian Elf, Book One &mdash; Geyson Allen</p>
+          </div>
+        </div>
+        <div class="audio-progress-wrap">
+          <span class="audio-time" id="current-time">0:00</span>
+          <div class="audio-progress" id="progress-bar" style="cursor:pointer">
+            <div class="audio-progress-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <span class="audio-time" id="total-time">--:--</span>
+        </div>
+      </div>
+
+      <span class="audio-coming-soon reveal reveal-delay-5" id="audio-status" style="display:none">Unable to load audio. Please try again later.</span>
+
+      <script>
+        (function() {
+          const audio = document.getElementById('prologue-audio');
+          const playBtn = document.getElementById('play-pause-btn');
+          const playIcon = document.getElementById('play-icon');
+          const pauseIcon = document.getElementById('pause-icon');
+          const currentTimeEl = document.getElementById('current-time');
+          const totalTimeEl = document.getElementById('total-time');
+          const progressFill = document.getElementById('progress-fill');
+          const progressBar = document.getElementById('progress-bar');
+          const statusEl = document.getElementById('audio-status');
+          const waveBar = document.querySelectorAll('.wave-bar');
+
+          function fmt(s) {
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60).toString().padStart(2, '0');
+            return m + ':' + sec;
+          }
+
+          // Check if audio file exists
+          audio.addEventListener('canplay', function() {
+            statusEl.style.display = 'none';
+            totalTimeEl.textContent = fmt(audio.duration);
+          });
+
+          audio.addEventListener('error', function() {
+            statusEl.textContent = 'Unable to load audio. Please try again later.';
+          });
+
+          audio.addEventListener('timeupdate', function() {
+            if (!audio.duration) return;
+            const pct = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = pct + '%';
+            currentTimeEl.textContent = fmt(audio.currentTime);
+          });
+
+          audio.addEventListener('ended', function() {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            waveBar.forEach(b => b.style.animationPlayState = 'paused');
+          });
+
+          playBtn.addEventListener('click', function() {
+            if (audio.paused) {
+              audio.play();
+              playIcon.style.display = 'none';
+              pauseIcon.style.display = 'block';
+              waveBar.forEach(b => b.style.animationPlayState = 'running');
+            } else {
+              audio.pause();
+              playIcon.style.display = 'block';
+              pauseIcon.style.display = 'none';
+              waveBar.forEach(b => b.style.animationPlayState = 'paused');
+            }
+          });
+
+          progressBar.addEventListener('click', function(e) {
+            if (!audio.duration) return;
+            const rect = progressBar.getBoundingClientRect();
+            const pct = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = pct * audio.duration;
+          });
+        })();
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AUTHOR ────────────────────────────────────────────── -->
+<section id="author">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Behind the Book</p>
+      <h2 class="section-title">Meet the Author</h2>
+    </div>
+    <div class="gold-rule"></div>
+    <div class="author-inner">
+
+      <div class="author-photo-wrap reveal reveal-delay-1">
+        <img
+          class="author-photo"
+          src="https://res.cloudinary.com/dsbllwpbh/image/upload/v1773368089/greyson-allen-ship-gemini_beojng.png"
+          alt="Geyson Allen, author of Glamorian Elf"
+        >
+        <span class="author-badge">Debut Author</span>
+      </div>
+
+      <div class="author-text reveal reveal-delay-2">
+        <p class="author-label">Author</p>
+        <h2 class="author-name">Geyson Allen</h2>
+        <p class="author-bio">
+          Geyson Allen is a storyteller drawn to worlds where magic carries a cost and legacy is never a gift — only a weight to be carried or refused. Glamorian Elf is his debut novel, the first chapter in an epic fantasy series set in the richly imagined world of Glimoria, where time itself can be wielded like a blade and the line between unity and ruin runs through the hearts of its people.
+        </p>
+        <p class="author-bio">
+          When he isn't building worlds, Geyson is an avid reader of epic fantasy, a lover of complex mythology, and a firm believer that the best stories ask questions they aren't willing to answer too easily. He is currently at work on Book Two of the Glamorian Elf series.
+        </p>
+        <span class="author-debut">Glamorian Elf, Book One — 2026</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── EMAIL SIGNUP ──────────────────────────────────────── -->
+<section id="signup">
+  <div class="container">
+    <div class="signup-wrap">
+      <span class="signup-icon reveal">&#9768;</span>
+      <h2 class="signup-title reveal reveal-delay-1">Join the Realm</h2>
+      <p class="signup-sub reveal reveal-delay-2">
+        The Null Tide is rising. Be the first to know when Book Two arrives —
+        and receive exclusive world-building lore from Glimoria.
+      </p>
+      <form class="signup-form reveal reveal-delay-3" onsubmit="handleSignup(event)">
+        <input
+          type="email"
+          class="signup-input"
+          placeholder="your.name@realm.com"
+          required
+          aria-label="Email address"
+        />
+        <button type="submit" class="btn btn-primary">Enter</button>
+      </form>
+      <p class="signup-privacy reveal reveal-delay-4">
+        No spam. No shadow blades. Just the story. Unsubscribe anytime.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-logo">Glamorian Elf</p>
+      <p class="footer-tagline">Time can be seized. Betrayal cannot be unmade.</p>
+      <nav class="footer-nav">
+        <a href="#synopsis">The Story</a>
+        <a href="#characters">Characters</a>
+        <a href="#sample">Read Sample</a>
+        <a href="#audio-sample">Listen</a>
+        <a href="#signup">Newsletter</a>
+        <a href="#">Amazon</a>
+      </nav>
+      <p class="footer-copy">&copy; 2026 Geyson Allen. All rights reserved. Glimoria and all associated characters are the intellectual property of Geyson Allen.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── JAVASCRIPT ────────────────────────────────────────── -->
+<script>
+  /* ── Starfield ── */
+  (function () {
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let particles = [];
+    let W, H, raf;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initStars(n) {
+      stars = [];
+      for (let i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.4 + 0.2,
+          alpha: Math.random() * 0.7 + 0.2,
+          speed: Math.random() * 0.15 + 0.02,
+          twinkle: Math.random() * Math.PI * 2,
+          twinkleSpeed: Math.random() * 0.015 + 0.005,
+          color: Math.random() > 0.85
+            ? (Math.random() > 0.5 ? '#00d4aa' : '#c9a84c')
+            : '#ffffff',
+        });
+      }
+    }
+
+    function initParticles(n) {
+      particles = [];
+      for (let i = 0; i < n; i++) {
+        spawnParticle();
+      }
+    }
+
+    function spawnParticle() {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2 + 0.5,
+        alpha: Math.random() * 0.4 + 0.05,
+        color: Math.random() > 0.6 ? '#00d4aa' : '#c9a84c',
+        life: Math.random(),
+        decay: Math.random() * 0.003 + 0.001,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      /* Stars */
+      stars.forEach(s => {
+        s.twinkle += s.twinkleSpeed;
+        const a = s.alpha * (0.6 + 0.4 * Math.sin(s.twinkle));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = a;
+        ctx.fill();
+        /* Slow drift */
+        s.y -= s.speed;
+        if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+      });
+
+      /* Particles / nebula wisps */
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          spawnParticle();
+          continue;
+        }
+        ctx.beginPath();
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+        grad.addColorStop(0, p.color);
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.globalAlpha = p.alpha * p.life;
+        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    }
+
+    function init() {
+      resize();
+      initStars(280);
+      initParticles(40);
+      draw();
+    }
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(raf);
+      resize();
+      initStars(280);
+      initParticles(40);
+      draw();
+    });
+
+    /* Wait for canvas to be sized */
+    if (document.readyState === 'complete') { init(); }
+    else { window.addEventListener('load', init); }
+  })();
+
+  /* ── Scroll: nav style ── */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Scroll reveal ── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ── Reader expand ── */
+  function expandReader() {
+    const text = document.getElementById('reader-text');
+    const fade = document.querySelector('.reader-fade');
+    text.style.maxHeight = 'none';
+    fade.style.display = 'none';
+    text.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── Email signup ── */
+  function handleSignup(e) {
+    e.preventDefault();
+    const form = e.target;
+    const input = form.querySelector('input');
+    const btn   = form.querySelector('button');
+    btn.textContent = 'Joined!';
+    btn.style.background = 'linear-gradient(135deg, #00d4aa 0%, #009977 100%)';
+    btn.style.color = '#0a0a0f';
+    btn.style.boxShadow = '0 4px 24px rgba(0,212,170,0.35)';
+    input.value = '';
+    input.placeholder = 'You are now part of the realm.';
+    setTimeout(() => {
+      btn.textContent = 'Enter';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.boxShadow = '';
+      input.placeholder = 'your.name@realm.com';
+    }, 4000);
+  }
+
+  /* ── Smooth scroll for all anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id === '#') return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        /* Close mobile nav */
+        document.querySelector('.nav-links').classList.remove('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
