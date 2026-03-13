@@ -1333,6 +1333,129 @@
   </div>
 </section>
 
+<!-- ─── AUDIO SAMPLE ───────────────────────────────────────── -->
+<section id="audio-sample">
+  <div class="container">
+    <div class="audio-wrap">
+      <p class="section-label reveal">Audio Experience</p>
+      <h2 class="audio-label reveal reveal-delay-1">Hear the Prologue</h2>
+      <p class="audio-sub reveal reveal-delay-2">Narrated Prologue — The First Council</p>
+
+      <!-- Waveform decoration -->
+      <div class="waveform reveal reveal-delay-3">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+
+      <!-- Real HTML5 audio element (hidden) -->
+      <audio id="prologue-audio" preload="metadata">
+        <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1773366422/glamorian-elf-prolouge-w-music_k3bycn.mp3" type="audio/mpeg">
+      </audio>
+
+      <!-- Styled player UI -->
+      <div class="audio-player-wrap reveal reveal-delay-4" id="player-ui">
+        <div class="audio-player-top">
+          <button class="play-btn" id="play-pause-btn" aria-label="Play audio sample">
+            <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <div class="audio-info">
+            <p class="audio-track-name">The First Council &mdash; Prologue</p>
+            <p class="audio-track-author">Glamorian Elf, Book One &mdash; Geyson Allen</p>
+          </div>
+        </div>
+        <div class="audio-progress-wrap">
+          <span class="audio-time" id="current-time">0:00</span>
+          <div class="audio-progress" id="progress-bar" style="cursor:pointer">
+            <div class="audio-progress-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <span class="audio-time" id="total-time">--:--</span>
+        </div>
+      </div>
+
+      <span class="audio-coming-soon reveal reveal-delay-5" id="audio-status" style="display:none">Unable to load audio. Please try again later.</span>
+
+      <script>
+        (function() {
+          const audio = document.getElementById('prologue-audio');
+          const playBtn = document.getElementById('play-pause-btn');
+          const playIcon = document.getElementById('play-icon');
+          const pauseIcon = document.getElementById('pause-icon');
+          const currentTimeEl = document.getElementById('current-time');
+          const totalTimeEl = document.getElementById('total-time');
+          const progressFill = document.getElementById('progress-fill');
+          const progressBar = document.getElementById('progress-bar');
+          const statusEl = document.getElementById('audio-status');
+          const waveBar = document.querySelectorAll('.wave-bar');
+
+          function fmt(s) {
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60).toString().padStart(2, '0');
+            return m + ':' + sec;
+          }
+
+          // Check if audio file exists
+          audio.addEventListener('canplay', function() {
+            statusEl.style.display = 'none';
+            totalTimeEl.textContent = fmt(audio.duration);
+          });
+
+          audio.addEventListener('error', function() {
+            statusEl.textContent = 'Unable to load audio. Please try again later.';
+          });
+
+          audio.addEventListener('timeupdate', function() {
+            if (!audio.duration) return;
+            const pct = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = pct + '%';
+            currentTimeEl.textContent = fmt(audio.currentTime);
+          });
+
+          audio.addEventListener('ended', function() {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            waveBar.forEach(b => b.style.animationPlayState = 'paused');
+          });
+
+          playBtn.addEventListener('click', function() {
+            if (audio.paused) {
+              audio.play();
+              playIcon.style.display = 'none';
+              pauseIcon.style.display = 'block';
+              waveBar.forEach(b => b.style.animationPlayState = 'running');
+            } else {
+              audio.pause();
+              playIcon.style.display = 'block';
+              pauseIcon.style.display = 'none';
+              waveBar.forEach(b => b.style.animationPlayState = 'paused');
+            }
+          });
+
+          progressBar.addEventListener('click', function(e) {
+            if (!audio.duration) return;
+            const rect = progressBar.getBoundingClientRect();
+            const pct = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = pct * audio.duration;
+          });
+        })();
+      </script>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CHARACTERS ────────────────────────────────────────── -->
 <section id="characters">
   <div class="container">
@@ -1590,129 +1713,6 @@
       <div class="reader-footer">
         <span class="reader-page-info">Glamorian Elf — Book One &nbsp;|&nbsp; Geyson Allen &nbsp;|&nbsp; &copy; 2026</span>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── AUDIO SAMPLE ───────────────────────────────────────── -->
-<section id="audio-sample">
-  <div class="container">
-    <div class="audio-wrap">
-      <p class="section-label reveal">Audio Experience</p>
-      <h2 class="audio-label reveal reveal-delay-1">Hear the Prologue</h2>
-      <p class="audio-sub reveal reveal-delay-2">Narrated Prologue — The First Council</p>
-
-      <!-- Waveform decoration -->
-      <div class="waveform reveal reveal-delay-3">
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-      </div>
-
-      <!-- Real HTML5 audio element (hidden) -->
-      <audio id="prologue-audio" preload="metadata">
-        <source src="https://res.cloudinary.com/dsbllwpbh/video/upload/v1773366422/glamorian-elf-prolouge-w-music_k3bycn.mp3" type="audio/mpeg">
-      </audio>
-
-      <!-- Styled player UI -->
-      <div class="audio-player-wrap reveal reveal-delay-4" id="player-ui">
-        <div class="audio-player-top">
-          <button class="play-btn" id="play-pause-btn" aria-label="Play audio sample">
-            <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-          <div class="audio-info">
-            <p class="audio-track-name">The First Council &mdash; Prologue</p>
-            <p class="audio-track-author">Glamorian Elf, Book One &mdash; Geyson Allen</p>
-          </div>
-        </div>
-        <div class="audio-progress-wrap">
-          <span class="audio-time" id="current-time">0:00</span>
-          <div class="audio-progress" id="progress-bar" style="cursor:pointer">
-            <div class="audio-progress-fill" id="progress-fill" style="width:0%"></div>
-          </div>
-          <span class="audio-time" id="total-time">--:--</span>
-        </div>
-      </div>
-
-      <span class="audio-coming-soon reveal reveal-delay-5" id="audio-status" style="display:none">Unable to load audio. Please try again later.</span>
-
-      <script>
-        (function() {
-          const audio = document.getElementById('prologue-audio');
-          const playBtn = document.getElementById('play-pause-btn');
-          const playIcon = document.getElementById('play-icon');
-          const pauseIcon = document.getElementById('pause-icon');
-          const currentTimeEl = document.getElementById('current-time');
-          const totalTimeEl = document.getElementById('total-time');
-          const progressFill = document.getElementById('progress-fill');
-          const progressBar = document.getElementById('progress-bar');
-          const statusEl = document.getElementById('audio-status');
-          const waveBar = document.querySelectorAll('.wave-bar');
-
-          function fmt(s) {
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60).toString().padStart(2, '0');
-            return m + ':' + sec;
-          }
-
-          // Check if audio file exists
-          audio.addEventListener('canplay', function() {
-            statusEl.style.display = 'none';
-            totalTimeEl.textContent = fmt(audio.duration);
-          });
-
-          audio.addEventListener('error', function() {
-            statusEl.textContent = 'Unable to load audio. Please try again later.';
-          });
-
-          audio.addEventListener('timeupdate', function() {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            progressFill.style.width = pct + '%';
-            currentTimeEl.textContent = fmt(audio.currentTime);
-          });
-
-          audio.addEventListener('ended', function() {
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
-            waveBar.forEach(b => b.style.animationPlayState = 'paused');
-          });
-
-          playBtn.addEventListener('click', function() {
-            if (audio.paused) {
-              audio.play();
-              playIcon.style.display = 'none';
-              pauseIcon.style.display = 'block';
-              waveBar.forEach(b => b.style.animationPlayState = 'running');
-            } else {
-              audio.pause();
-              playIcon.style.display = 'block';
-              pauseIcon.style.display = 'none';
-              waveBar.forEach(b => b.style.animationPlayState = 'paused');
-            }
-          });
-
-          progressBar.addEventListener('click', function(e) {
-            if (!audio.duration) return;
-            const rect = progressBar.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pct * audio.duration;
-          });
-        })();
-      </script>
     </div>
   </div>
 </section>
