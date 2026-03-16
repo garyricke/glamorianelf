@@ -1255,7 +1255,7 @@
 <body>
 
 <!-- ─── PASSWORD GATE ───────────────────────────────────── -->
-<div id="gate-overlay" style="display:none">
+<div id="gate-overlay">
   <div class="gate-logo">Glamorian Elf</div>
   <div class="gate-tagline">A realm awaits. Prove your passage.</div>
   <div class="gate-box">
@@ -2071,10 +2071,10 @@
     return;
   }
 
-  // overlay.style.display = 'flex';  // gate disabled temporarily
-  // input.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
-  // btn.addEventListener('click', attempt);
-  // requestAnimationFrame(() => input.focus());
+  overlay.style.display = 'flex';
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
+  btn.addEventListener('click', attempt);
+  requestAnimationFrame(() => input.focus());
 })();
 </script>
 
